@@ -6,6 +6,8 @@ import com.techVerse.ReserVibe.Repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class UsuarioService {
 
@@ -22,5 +24,20 @@ public class UsuarioService {
         usuario = usuarioRepository.save(usuario);
 
         return new UsuarioDto(usuario);
+    }
+
+    public UsuarioDto login(String usuario, String senha) {
+        Usuario user = usuarioRepository.findByEmail(usuario);
+
+        if (user == null) return null;
+
+        if (Objects.equals(user.getSenha(), senha)) {
+            System.out.println("Login correto");
+            return new UsuarioDto(user);
+        }else {
+            System.out.println("Login incorreto");
+            return new UsuarioDto(user);
+        }
+
     }
 }

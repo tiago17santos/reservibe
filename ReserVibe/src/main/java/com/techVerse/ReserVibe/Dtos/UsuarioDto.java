@@ -4,8 +4,6 @@ import com.techVerse.ReserVibe.Models.TipoUsuario;
 import com.techVerse.ReserVibe.Models.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 @EqualsAndHashCode(of = "id")
 public class UsuarioDto {
@@ -23,9 +21,10 @@ public class UsuarioDto {
 
     private TipoUsuario role;
 
-    public UsuarioDto() {}
+    public UsuarioDto() {
+    }
 
-    public UsuarioDto( String nome, String email, String senha, TipoUsuario role) {
+    public UsuarioDto(String nome, String email, String senha, TipoUsuario role) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;

@@ -1,7 +1,6 @@
 package com.techVerse.ReserVibe.Controllers;
 
 import com.techVerse.ReserVibe.Dtos.UsuarioDto;
-import com.techVerse.ReserVibe.Models.Usuario;
 import com.techVerse.ReserVibe.Services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +22,16 @@ public class UsuarioController {
         usuarioDto = usuarioService.criarUsuario(usuarioDto);
 
         return ResponseEntity.ok().body(usuarioDto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioDto> login(@RequestBody UsuarioDto usuario) {
+        usuario = usuarioService.login(usuario.getEmail(), usuario.getSenha());
+
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
