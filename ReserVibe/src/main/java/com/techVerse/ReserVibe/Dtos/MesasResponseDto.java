@@ -6,13 +6,13 @@ public class MesasResponseDto {
     private Long id;
     private String nome;
     private Integer capacidade;
-    private String status; // aqui já vem o valor legível
+    private String status;
 
     public MesasResponseDto(Mesas mesa) {
         this.id = mesa.getId();
         this.nome = mesa.getNome();
         this.capacidade = mesa.getCapacidade();
-        this.status = mesa.getStatus().getDescricao(); // transforma DISPONIVEL → Disponível
+        this.status = mesa.getStatus().getDescricao();
     }
 
     public Long getId() {

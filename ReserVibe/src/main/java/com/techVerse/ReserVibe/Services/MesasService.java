@@ -3,12 +3,13 @@ package com.techVerse.ReserVibe.Services;
 import com.techVerse.ReserVibe.Dtos.MesasDto;
 import com.techVerse.ReserVibe.Dtos.MesasResponseDto;
 import com.techVerse.ReserVibe.Models.Mesas;
+import com.techVerse.ReserVibe.Models.StatusMesa;
 import com.techVerse.ReserVibe.Repositories.MesasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class MesasService {
@@ -17,7 +18,7 @@ public class MesasService {
     private MesasRepository mesasRepository;
 
     @Transactional()
-    public MesasDto criar (MesasDto mesas){
+    public MesasDto criar(MesasDto mesas) {
         Mesas mesa = new Mesas();
         mesa.setNome(mesas.getNome());
         mesa.setCapacidade(mesas.getCapacidade());
@@ -28,8 +29,9 @@ public class MesasService {
     }
 
     @Transactional(readOnly = true)
-    public List<MesasResponseDto> listarTodas (){
-        List<Mesas> mesas = mesasRepository.findAll();
-        return mesas.stream().map(x->new MesasResponseDto(x)).toList();
+    public Page<MesasResponseDto> listarTodas(StatusMesa status, String nome, Integer capacidade, Pageable page) {
+        Page<Mesas> resultado = mesasRepository.filtrarMesas(status, nome, capacidade, page);
+        return resultado.map(x -> new MesasResponseDto(x));
     }
+
 }

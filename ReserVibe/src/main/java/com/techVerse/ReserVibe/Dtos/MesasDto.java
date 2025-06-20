@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(of="id")
+@EqualsAndHashCode(of = "id")
 public class MesasDto {
 
     private long id;
@@ -14,14 +14,16 @@ public class MesasDto {
     @NotBlank
     private String nome;
 
-    private int capacidade;
+    @NotNull
+    private Integer capacidade;
 
     @NotNull
     private StatusMesa status;
 
-    public MesasDto() {}
+    public MesasDto() {
+    }
 
-    public MesasDto( String nome, int capacidade, StatusMesa status) {
+    public MesasDto(String nome, Integer capacidade, StatusMesa status) {
         this.nome = nome;
         this.capacidade = capacidade;
         this.status = status;
@@ -49,11 +51,11 @@ public class MesasDto {
         this.nome = nome;
     }
 
-    public int getCapacidade() {
+    public Integer getCapacidade() {
         return capacidade;
     }
 
-    public void setCapacidade(int capacidade) {
+    public void setCapacidade(Integer capacidade) {
         this.capacidade = capacidade;
     }
 

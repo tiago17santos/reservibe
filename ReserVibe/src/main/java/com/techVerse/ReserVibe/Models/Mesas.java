@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name="mesas")
+@Table(name = "mesas")
 @EqualsAndHashCode(of = "id")
 public class Mesas {
 
@@ -12,14 +12,15 @@ public class Mesas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nome;
-    private int capacidade;
+    private Integer capacidade;
 
     @Enumerated(EnumType.STRING)
     private StatusMesa status;
 
-    public Mesas() {}
+    public Mesas() {
+    }
 
-    public Mesas (long id, String nome, int capacidade, StatusMesa status) {
+    public Mesas(long id, String nome, Integer capacidade, StatusMesa status) {
         this.id = id;
         this.nome = nome;
         this.capacidade = capacidade;
@@ -42,11 +43,11 @@ public class Mesas {
         this.nome = nome;
     }
 
-    public int getCapacidade() {
+    public Integer getCapacidade() {
         return capacidade;
     }
 
-    public void setCapacidade(int capacidade) {
+    public void setCapacidade(Integer capacidade) {
         this.capacidade = capacidade;
     }
 
