@@ -2,7 +2,9 @@ package com.techVerse.ReserVibe.Dtos;
 
 import com.techVerse.ReserVibe.Models.TipoUsuario;
 import com.techVerse.ReserVibe.Models.Usuario;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(of = "id")
@@ -14,11 +16,13 @@ public class UsuarioDto {
     private String nome;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
     private String senha;
 
+    @NotNull
     private TipoUsuario role;
 
     public UsuarioDto() {
