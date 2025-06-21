@@ -25,11 +25,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UsuarioDto> login(@RequestBody UsuarioDto usuario) {
-        usuario = usuarioService.login(usuario.getEmail(), usuario.getSenha());
+    public ResponseEntity<String> login(@RequestBody UsuarioDto usuario) {
+        String user = usuarioService.login(usuario.getEmail(), usuario.getSenha());
 
         if (usuario != null) {
-            return ResponseEntity.ok(usuario);
+            return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.badRequest().build();
         }
