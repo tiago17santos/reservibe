@@ -28,10 +28,10 @@ public class UsuarioController {
     public ResponseEntity<String> login(@RequestBody UsuarioDto usuario) {
         String user = usuarioService.login(usuario.getEmail(), usuario.getSenha());
 
-        if (usuario != null) {
+        if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Email ou senha incorretos.");
         }
     }
 }
