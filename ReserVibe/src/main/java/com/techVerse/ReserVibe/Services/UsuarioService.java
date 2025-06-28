@@ -40,9 +40,8 @@ public class UsuarioService {
 
     public String login(String usuario, String senha) {
         Usuario user = usuarioRepository.findByEmail(usuario);
-
         if (user == null || !passwordEncoder.matches(senha, user.getSenha())) return null;
-
+        
         return tokenService.generateToken(user.getEmail());
     }
 }

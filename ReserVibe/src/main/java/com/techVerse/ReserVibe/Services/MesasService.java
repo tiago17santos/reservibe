@@ -17,8 +17,8 @@ public class MesasService {
     @Autowired
     private MesasRepository mesasRepository;
 
-    @Transactional()
-    public MesasDto criar(MesasDto mesas) {
+    @Transactional
+    public MesasDto criarMesa(MesasDto mesas) {
         Mesas mesa = new Mesas();
         mesa.setNome(mesas.getNome());
         mesa.setCapacidade(mesas.getCapacidade());
@@ -29,9 +29,30 @@ public class MesasService {
     }
 
     @Transactional(readOnly = true)
-    public Page<MesasResponseDto> listarTodas(StatusMesa status, String nome, Integer capacidade, Pageable page) {
+    public Page<MesasResponseDto> listarTodasMesas(StatusMesa status, String nome, Integer capacidade, Pageable page) {
         Page<Mesas> resultado = mesasRepository.filtrarMesas(status, nome, capacidade, page);
         return resultado.map(x -> new MesasResponseDto(x));
+    }
+
+    @Transactional
+    public MesasResponseDto atualizarMesa(Integer id, MesasResponseDto mesas) {
+        try {
+            Mesas mesa = mesasRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Mesa não encontrada"));
+
+            if (mesas.getNome() != null) mesa.setNome(mesas.getNome());
+
+            if (mesas.getCapacidade() != null) mesa.setCapacidade(mesas.getCapacidade());
+
+            if (mesas.getStatus() != null) mesa.setStatus(mesas.getStatus());
+
+            mesa = mesasRepository.save(mesa);
+
+            return new MesasResponseDto(mesa);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao editar mesas", e);
+        }
+
     }
 
 }

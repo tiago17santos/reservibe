@@ -34,6 +34,7 @@ public class Usuario implements UserDetails {
         this.role = role;
     }
 
+
     public long getId() {
         return id;
     }

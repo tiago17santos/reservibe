@@ -1,18 +1,28 @@
 package com.techVerse.ReserVibe.Dtos;
 
 import com.techVerse.ReserVibe.Models.Mesas;
+import com.techVerse.ReserVibe.Models.StatusMesa;
 
 public class MesasResponseDto {
     private Long id;
     private String nome;
     private Integer capacidade;
-    private String status;
+    private StatusMesa status;
+
+    public MesasResponseDto() {}
+
+    public MesasResponseDto(long id, String nome, Integer capacidade, StatusMesa status) {
+        this.id = id;
+        this.nome = nome;
+        this.capacidade = capacidade;
+        this.status = status;
+    }
 
     public MesasResponseDto(Mesas mesa) {
         this.id = mesa.getId();
         this.nome = mesa.getNome();
         this.capacidade = mesa.getCapacidade();
-        this.status = mesa.getStatus().getDescricao();
+        this.status = mesa.getStatus();
     }
 
     public Long getId() {
@@ -39,11 +49,11 @@ public class MesasResponseDto {
         this.capacidade = capacidade;
     }
 
-    public String getStatus() {
+    public StatusMesa getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusMesa status) {
         this.status = status;
     }
 }
