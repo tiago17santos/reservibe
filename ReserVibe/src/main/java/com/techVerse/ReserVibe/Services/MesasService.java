@@ -40,11 +40,24 @@ public class MesasService {
             Mesas mesa = mesasRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Mesa não encontrada"));
 
-            if (mesas.getNome() != null) mesa.setNome(mesas.getNome());
+            if (mesas.getNome() != null) {
+                String nome = mesas.getNome().trim();
+                if (nome.isEmpty()) {
+                    throw new IllegalArgumentException("Nome não pode ser vazio.");
+                }
+                mesa.setNome(mesas.getNome());
+            }
 
-            if (mesas.getCapacidade() != null) mesa.setCapacidade(mesas.getCapacidade());
+            if (mesas.getCapacidade() != null) {
+                if (mesas.getCapacidade() <= 0) {
+                    throw new IllegalArgumentException("Capacidade deve ser maior que zero.");
+                }
+                mesa.setCapacidade(mesas.getCapacidade());
+            }
 
-            if (mesas.getStatus() != null) mesa.setStatus(mesas.getStatus());
+            if (mesas.getStatus() != null) {
+                mesa.setStatus(mesas.getStatus());
+            }
 
             mesa = mesasRepository.save(mesa);
 
@@ -52,7 +65,5 @@ public class MesasService {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao editar mesas", e);
         }
-
     }
-
 }
