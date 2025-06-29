@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/mesas").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/mesas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/mesas/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

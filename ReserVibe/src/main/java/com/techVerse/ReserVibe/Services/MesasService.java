@@ -37,8 +37,7 @@ public class MesasService {
     @Transactional
     public MesasResponseDto atualizarMesa(Integer id, MesasResponseDto mesas) {
         try {
-            Mesas mesa = mesasRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Mesa não encontrada"));
+            Mesas mesa = mesasRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada"));
 
             if (mesas.getNome() != null) {
                 String nome = mesas.getNome().trim();
@@ -63,7 +62,22 @@ public class MesasService {
 
             return new MesasResponseDto(mesa);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao editar mesas", e);
+            throw new RuntimeException("Erro ao editar a mesa!", e);
+        }
+    }
+
+    public String deletarMesa(Integer id) {
+        try{
+            Mesas mesa = mesasRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada!"));
+            if (mesa.getStatus() == StatusMesa.inativa) {
+                mesasRepository.deleteById(id);
+
+                return "Mesa "+ id + "- " + mesa.getNome() + " deletada com sucesso!";
+            }
+            return "Mesa "+ id + "- " + mesa.getNome() + " está " + mesa.getStatus() + " e não pode ser deletada! ";
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao deletar a mesa!",e);
         }
     }
 }

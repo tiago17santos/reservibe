@@ -53,4 +53,14 @@ public class MesasController {
 
         return ResponseEntity.badRequest().build();
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> excluirMesa(@PathVariable Integer id) {
+        String mesa = mesasService.deletarMesa(id);
+
+        if (mesa != null) return ResponseEntity.ok(mesa);
+
+        return ResponseEntity.badRequest().build();
+    }
 }
