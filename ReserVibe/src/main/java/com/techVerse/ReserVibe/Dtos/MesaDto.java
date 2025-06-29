@@ -1,13 +1,13 @@
 package com.techVerse.ReserVibe.Dtos;
 
-import com.techVerse.ReserVibe.Models.Mesas;
+import com.techVerse.ReserVibe.Models.Mesa;
 import com.techVerse.ReserVibe.Models.StatusMesa;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(of = "id")
-public class MesasDto {
+public class MesaDto {
 
     private long id;
 
@@ -20,19 +20,19 @@ public class MesasDto {
     @NotNull
     private StatusMesa status;
 
-    public MesasDto() {
+    public MesaDto() {
     }
 
-    public MesasDto(String nome, Integer capacidade, StatusMesa status) {
+    public MesaDto(String nome, Integer capacidade, StatusMesa status) {
         this.nome = nome;
         this.capacidade = capacidade;
         this.status = status;
     }
 
-    public MesasDto(Mesas mesas) {
-        this.nome = mesas.getNome();
-        this.capacidade = mesas.getCapacidade();
-        this.status = mesas.getStatus();
+    public MesaDto(Mesa mesa) {
+        this.nome = mesa.getNome();
+        this.capacidade = mesa.getCapacidade();
+        this.status = mesa.getStatus();
     }
 
     public long getId() {

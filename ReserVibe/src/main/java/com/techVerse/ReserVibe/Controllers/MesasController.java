@@ -1,7 +1,7 @@
 package com.techVerse.ReserVibe.Controllers;
 
-import com.techVerse.ReserVibe.Dtos.MesasDto;
-import com.techVerse.ReserVibe.Dtos.MesasResponseDto;
+import com.techVerse.ReserVibe.Dtos.MesaDto;
+import com.techVerse.ReserVibe.Dtos.MesaResponseDto;
 import com.techVerse.ReserVibe.Models.StatusMesa;
 import com.techVerse.ReserVibe.Services.MesasService;
 import jakarta.validation.Valid;
@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,31 +21,31 @@ public class MesasController {
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<MesasDto> criarMesa(@RequestBody @Valid MesasDto mesasDto) {
-        mesasDto = mesasService.criarMesa(mesasDto);
+    public ResponseEntity<MesaDto> criarMesa(@RequestBody @Valid MesaDto mesaDto) {
+        mesaDto = mesasService.criarMesa(mesaDto);
 
-        if (mesasDto != null) return ResponseEntity.ok(mesasDto);
+        if (mesaDto != null) return ResponseEntity.ok(mesaDto);
 
         return ResponseEntity.badRequest().build();
     }
 
     @GetMapping()
-    public ResponseEntity<Page<MesasResponseDto>> listarTodasMesas(Pageable pageable,
-                                                              @RequestParam(required = false) StatusMesa status,
-                                                              @RequestParam(required = false) String nome,
-                                                              @RequestParam(required = false) Integer capacidade) {
+    public ResponseEntity<Page<MesaResponseDto>> listarTodasMesas(Pageable pageable,
+                                                                  @RequestParam(required = false) StatusMesa status,
+                                                                  @RequestParam(required = false) String nome,
+                                                                  @RequestParam(required = false) Integer capacidade) {
 
-        Page<MesasResponseDto> mesas = mesasService.listarTodasMesas(status, nome, capacidade, pageable);
+        Page<MesaResponseDto> mesas = mesasService.listarTodasMesas(status, nome, capacidade, pageable);
         return ResponseEntity.ok(mesas);
     }
 
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<MesasResponseDto> atualizarMesa(@PathVariable Integer id,
-                                                          @RequestBody @Valid MesasResponseDto mesasDto) {
+    public ResponseEntity<MesaResponseDto> atualizarMesa(@PathVariable Integer id,
+                                                         @RequestBody @Valid MesaResponseDto mesasDto) {
 
-        MesasResponseDto mesa = mesasService.atualizarMesa(id,mesasDto);
+        MesaResponseDto mesa = mesasService.atualizarMesa(id,mesasDto);
 
         if (mesa != null) return ResponseEntity.ok(mesa);
 

@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "mesas")
 @EqualsAndHashCode(of = "id")
-public class Mesas {
+public class Mesa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class Mesas {
     @Enumerated(EnumType.STRING)
     private StatusMesa status;
 
-    public Mesas() {
+    public Mesa() {
     }
 
-    public Mesas(long id, String nome, Integer capacidade, StatusMesa status) {
+    public Mesa(long id, String nome, Integer capacidade, StatusMesa status) {
         this.id = id;
         this.nome = nome;
         this.capacidade = capacidade;
