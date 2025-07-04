@@ -24,14 +24,25 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MesaNaoEncontradaException.class)
-    public ResponseEntity<Object> handleRequisicaoNaoEncontrada(MesaNaoEncontradaException ex) {
+    public ResponseEntity<Object> handleMesaNaoEncontrada(MesaNaoEncontradaException ex) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", ex.getMessage());
+        body.put("error", "Não encontrado");
         body.put("message", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DataInvalidaException.class)
+    public ResponseEntity<Object> handleDataInvalidaException(DataInvalidaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Data inválida");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.techVerse.ReserVibe.Services;
 
 import com.techVerse.ReserVibe.Dtos.ReservaDto;
+import com.techVerse.ReserVibe.Execptions.DataInvalidaException;
 import com.techVerse.ReserVibe.Execptions.MesaInvalidaException;
 import com.techVerse.ReserVibe.Execptions.MesaNaoEncontradaException;
 import com.techVerse.ReserVibe.Models.*;
@@ -31,7 +32,12 @@ public class ReservaService {
         reserva.setStatusReserva(StatusReserva.ativo);
 
 
-        reserva.setDataReserva(new Date());
+        Date data = reservaDto.getDataReserva();
+
+        if(data.before(new Date())) {
+            throw new DataInvalidaException("Inserir data da reserva para dias posteriores ao atual.");
+        }
+        reserva.setDataReserva(data);
 
         Long mesaId = reservaDto.getMesa().getId();
         Mesa mesa = mesaRepository.findById(mesaId)
