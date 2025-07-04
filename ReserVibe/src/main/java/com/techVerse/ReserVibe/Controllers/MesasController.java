@@ -42,7 +42,7 @@ public class MesasController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<MesaResponseDto> atualizarMesa(@PathVariable Integer id,
+    public ResponseEntity<MesaResponseDto> atualizarMesa(@PathVariable Long id,
                                                          @RequestBody @Valid MesaResponseDto mesasDto) {
 
         MesaResponseDto mesa = mesasService.atualizarMesa(id,mesasDto);
@@ -54,7 +54,7 @@ public class MesasController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> excluirMesa(@PathVariable Integer id) {
+    public ResponseEntity<String> excluirMesa(@PathVariable Long id) {
         String mesa = mesasService.deletarMesa(id);
 
         if (mesa != null) return ResponseEntity.ok(mesa);

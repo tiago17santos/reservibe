@@ -4,7 +4,7 @@ import com.techVerse.ReserVibe.Dtos.MesaDto;
 import com.techVerse.ReserVibe.Dtos.MesaResponseDto;
 import com.techVerse.ReserVibe.Models.Mesa;
 import com.techVerse.ReserVibe.Models.StatusMesa;
-import com.techVerse.ReserVibe.Repositories.MesasRepository;
+import com.techVerse.ReserVibe.Repositories.MesaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MesasService {
 
     @Autowired
-    private MesasRepository mesasRepository;
+    private MesaRepository mesaRepository;
 
     @Transactional
     public MesaDto criarMesa(MesaDto mesas) {
@@ -23,21 +23,21 @@ public class MesasService {
         mesa.setNome(mesas.getNome());
         mesa.setCapacidade(mesas.getCapacidade());
         mesa.setStatus(mesas.getStatus());
-        mesa = mesasRepository.save(mesa);
+        mesa = mesaRepository.save(mesa);
 
         return new MesaDto(mesa);
     }
 
     @Transactional(readOnly = true)
     public Page<MesaResponseDto> listarTodasMesas(StatusMesa status, String nome, Integer capacidade, Pageable page) {
-        Page<Mesa> resultado = mesasRepository.filtrarMesas(status, nome, capacidade, page);
+        Page<Mesa> resultado = mesaRepository.filtrarMesas(status, nome, capacidade, page);
         return resultado.map(x -> new MesaResponseDto(x));
     }
 
     @Transactional
-    public MesaResponseDto atualizarMesa(Integer id, MesaResponseDto mesas) {
+    public MesaResponseDto atualizarMesa(Long id, MesaResponseDto mesas) {
         try {
-            Mesa mesa = mesasRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada"));
+            Mesa mesa = mesaRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada"));
 
             if (mesas.getNome() != null) {
                 String nome = mesas.getNome().trim();
@@ -58,7 +58,7 @@ public class MesasService {
                 mesa.setStatus(mesas.getStatus());
             }
 
-            mesa = mesasRepository.save(mesa);
+            mesa = mesaRepository.save(mesa);
 
             return new MesaResponseDto(mesa);
         } catch (Exception e) {
@@ -66,11 +66,11 @@ public class MesasService {
         }
     }
 
-    public String deletarMesa(Integer id) {
+    public String deletarMesa(Long id) {
         try{
-            Mesa mesa = mesasRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada!"));
+            Mesa mesa = mesaRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada!"));
             if (mesa.getStatus() == StatusMesa.inativa) {
-                mesasRepository.deleteById(id);
+                mesaRepository.deleteById(id);
 
                 return "Mesa "+ id + "- " + mesa.getNome() + " deletada com sucesso!";
             }
