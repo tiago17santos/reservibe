@@ -10,6 +10,8 @@ import com.techVerse.ReserVibe.Repositories.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 @Service
@@ -31,12 +33,22 @@ public class ReservaService {
         reserva.setUsuario(usuario);
         reserva.setStatusReserva(StatusReserva.ativo);
 
-
         Date data = reservaDto.getDataReserva();
 
         if(data.before(new Date())) {
             throw new DataInvalidaException("Inserir data da reserva para dias posteriores ao atual.");
         }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(data);
+
+        int hora = calendar.get(Calendar.HOUR_OF_DAY);
+        int minuto = calendar.get(Calendar.MINUTE);
+
+        if (hora < 18 || (hora == 23 && minuto > 30)) {
+            throw new DataInvalidaException("As reservas só podem ser feitas entre 18h e 23:30h.");
+        }
+
         reserva.setDataReserva(data);
 
         Long mesaId = reservaDto.getMesa().getId();
