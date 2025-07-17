@@ -7,10 +7,10 @@ import com.techVerse.ReserVibe.Execptions.MesaNaoEncontradaException;
 import com.techVerse.ReserVibe.Models.*;
 import com.techVerse.ReserVibe.Repositories.MesaRepository;
 import com.techVerse.ReserVibe.Repositories.ReservaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,6 +26,7 @@ public class ReservaService {
     @Autowired
     private MesaRepository mesaRepository;
 
+    @Transactional
     public ReservaDto criarReserva(ReservaDto reservaDto) {
         Reserva reserva = new Reserva();
 
@@ -35,7 +36,7 @@ public class ReservaService {
 
         Date data = reservaDto.getDataReserva();
 
-        if(data.before(new Date())) {
+        if (data.before(new Date())) {
             throw new DataInvalidaException("Inserir data da reserva para dias posteriores ao atual.");
         }
 
@@ -55,13 +56,29 @@ public class ReservaService {
         Mesa mesa = mesaRepository.findById(mesaId)
                 .orElseThrow(() -> new MesaNaoEncontradaException("Mesa não encontrada com ID: " + mesaId));
 
-        if (mesa.getStatus() != StatusMesa.disponivel){
+        if (mesa.getStatus() != StatusMesa.disponivel) {
             throw new MesaInvalidaException("Mesa não disponível para reserva.");
         }
 
         reserva.setMesa(mesa);
 
+        atualizarStatusMesaComBaseNaReserva(reserva);
+
         return new ReservaDto(reservaRepository.save(reserva));
+
+    }
+
+
+
+    public void atualizarStatusMesaComBaseNaReserva(Reserva reserva) {
+        Mesa mesa = reserva.getMesa();
+
+        if (reserva.getStatusReserva() == StatusReserva.ativo || reserva.getStatusReserva() == StatusReserva.confirmada) {
+            mesa.setStatus(StatusMesa.reservada);
+        } else {
+            mesa.setStatus(StatusMesa.disponivel);
+        }
+
 
     }
 }

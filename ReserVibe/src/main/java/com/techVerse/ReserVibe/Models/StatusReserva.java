@@ -5,7 +5,9 @@ import lombok.Getter;
 @Getter
 public enum StatusReserva {
     ativo("Ativa"),
-    cancelado("Cancelada");
+    cancelado("Cancelada"),
+    confirmada("confirmada"),
+    expirada("expirada");
 
     private String descricao;
 
