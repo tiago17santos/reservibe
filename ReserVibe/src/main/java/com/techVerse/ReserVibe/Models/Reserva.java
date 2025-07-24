@@ -16,7 +16,7 @@ public class Reserva {
     private Date dataReserva;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status_reserva")
+    @Column(name = "status_reserva")
     private StatusReserva statusReserva;
 
     @ManyToOne

@@ -61,14 +61,19 @@ public class ReservaService {
         }
 
         reserva.setMesa(mesa);
-
         atualizarStatusMesaComBaseNaReserva(reserva);
-
         return new ReservaDto(reservaRepository.save(reserva));
-
     }
 
+    @Transactional
+    public ReservaDto cancelaReserva(Long id) {
+        Reserva reserva = reservaRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada!"));
+        reserva.setStatusReserva(StatusReserva.cancelado);
+        reserva = reservaRepository.save(reserva);
 
+        atualizarStatusMesaComBaseNaReserva(reserva);
+        return new ReservaDto(reserva);
+    }
 
     public void atualizarStatusMesaComBaseNaReserva(Reserva reserva) {
         Mesa mesa = reserva.getMesa();
@@ -78,7 +83,5 @@ public class ReservaService {
         } else {
             mesa.setStatus(StatusMesa.disponivel);
         }
-
-
     }
 }
