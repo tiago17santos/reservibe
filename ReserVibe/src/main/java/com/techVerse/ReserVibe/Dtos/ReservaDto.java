@@ -3,10 +3,8 @@ package com.techVerse.ReserVibe.Dtos;
 import com.techVerse.ReserVibe.Models.Mesa;
 import com.techVerse.ReserVibe.Models.Reserva;
 import com.techVerse.ReserVibe.Models.StatusReserva;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.Date;
-import java.util.List;
 
 public class ReservaDto {
 

@@ -28,8 +28,6 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             List<String> roles = new ArrayList<>();
 
-            System.out.println(usuario.getRole().getTipo());
-
             if (usuario.getRole() != null) {
                 roles.add("ROLE_" + usuario.getRole().getTipo().toUpperCase());
             }

@@ -4,6 +4,7 @@ import com.techVerse.ReserVibe.Dtos.ReservaDto;
 import com.techVerse.ReserVibe.Services.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,5 +32,13 @@ public class ReservaController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @PatchMapping("/confirmar/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> confirmarReserva(@PathVariable Long id) {
+        reservaService.confirmarReserva(id);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

@@ -4,6 +4,7 @@ import com.techVerse.ReserVibe.Dtos.ReservaDto;
 import com.techVerse.ReserVibe.Execptions.DataInvalidaException;
 import com.techVerse.ReserVibe.Execptions.MesaInvalidaException;
 import com.techVerse.ReserVibe.Execptions.MesaNaoEncontradaException;
+import com.techVerse.ReserVibe.Execptions.ReservaNaoEncontradaException;
 import com.techVerse.ReserVibe.Models.*;
 import com.techVerse.ReserVibe.Repositories.MesaRepository;
 import com.techVerse.ReserVibe.Repositories.ReservaRepository;
@@ -67,7 +68,7 @@ public class ReservaService {
 
     @Transactional
     public ReservaDto cancelaReserva(Long id) {
-        Reserva reserva = reservaRepository.findById(id).orElseThrow(() -> new RuntimeException("Mesa não encontrada!"));
+        Reserva reserva = reservaRepository.findById(id).orElseThrow(() -> new MesaNaoEncontradaException("Mesa não encontrada!"));
         reserva.setStatusReserva(StatusReserva.cancelado);
         reserva = reservaRepository.save(reserva);
 
@@ -84,4 +85,12 @@ public class ReservaService {
             mesa.setStatus(StatusMesa.disponivel);
         }
     }
+
+    public void confirmarReserva(Long id) {
+        Reserva reserva = reservaRepository.findById(id).orElseThrow(() -> new ReservaNaoEncontradaException("Reserva não encontrada!"));
+        reserva.setStatusReserva(StatusReserva.confirmada);
+        reserva.getMesa().setStatus(StatusMesa.reservada);
+        reservaRepository.save(reserva);
+    }
+
 }

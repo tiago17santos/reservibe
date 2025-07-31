@@ -34,6 +34,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ReservaNaoEncontradaException.class)
+    public ResponseEntity<Object> handleReservaNaoEncontrada(ReservaNaoEncontradaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.NOT_FOUND.value());
+        body.put("error", "Não encontrado");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(DataInvalidaException.class)
     public ResponseEntity<Object> handleDataInvalidaException(DataInvalidaException ex) {
         Map<String, Object> body = new HashMap<>();
