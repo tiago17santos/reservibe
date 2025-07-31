@@ -15,12 +15,14 @@ public interface MesaRepository extends JpaRepository<Mesa, Long> {
         WHERE (:status IS NULL OR m.status = :status)
           AND (:nome IS NULL OR UPPER(m.nome) LIKE UPPER(CONCAT('%', :nome, '%')))
           AND (:capacidade IS NULL OR m.capacidade = :capacidade)
-    """)
+        """)
     Page<Mesa> filtrarMesas(@Param("status") StatusMesa status,
                             @Param("nome") String nome,
                             @Param("capacidade") Integer capacidade,
                             Pageable pageable);
 
+    @Query("SELECT COUNT(m) FROM Mesa m WHERE m.status = :status")
+    long countByMesaStatus(@Param("status") StatusMesa status);
 
 
 }

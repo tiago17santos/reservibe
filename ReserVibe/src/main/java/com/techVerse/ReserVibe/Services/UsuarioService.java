@@ -1,19 +1,14 @@
 package com.techVerse.ReserVibe.Services;
 
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.oauth2.jwt.Jwt;
-import com.techVerse.ReserVibe.Security.SecurityConfig;
 import com.techVerse.ReserVibe.Dtos.UsuarioDto;
 import com.techVerse.ReserVibe.Models.Usuario;
 import com.techVerse.ReserVibe.Repositories.UsuarioRepository;
 import com.techVerse.ReserVibe.Security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +43,7 @@ public class UsuarioService  {
         Usuario user = usuarioRepository.findByEmail(usuario);
         if (user == null || !passwordEncoder.matches(senha, user.getSenha())) return null;
 
-        return tokenService.generateToken(user.getEmail());
+        return tokenService.generateToken(user);
     }
 
     protected Usuario authenticated() {
