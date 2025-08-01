@@ -1,15 +1,14 @@
 package com.techVerse.ReserVibe.Services;
 
 import com.techVerse.ReserVibe.Dtos.ReservaDto;
-import com.techVerse.ReserVibe.Execptions.DataInvalidaException;
-import com.techVerse.ReserVibe.Execptions.MesaInvalidaException;
-import com.techVerse.ReserVibe.Execptions.MesaNaoEncontradaException;
-import com.techVerse.ReserVibe.Execptions.ReservaNaoEncontradaException;
+import com.techVerse.ReserVibe.Execptions.*;
 import com.techVerse.ReserVibe.Models.*;
 import com.techVerse.ReserVibe.Repositories.MesaRepository;
 import com.techVerse.ReserVibe.Repositories.ReservaRepository;
+import com.techVerse.ReserVibe.Repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -22,10 +21,13 @@ public class ReservaService {
     private ReservaRepository reservaRepository;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private MesaRepository mesaRepository;
 
     @Autowired
-    private MesaRepository mesaRepository;
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Transactional
     public ReservaDto criarReserva(ReservaDto reservaDto) {
@@ -68,11 +70,18 @@ public class ReservaService {
 
     @Transactional
     public ReservaDto cancelaReserva(Long id) {
-        Reserva reserva = reservaRepository.findById(id).orElseThrow(() -> new MesaNaoEncontradaException("Mesa não encontrada!"));
-        reserva.setStatusReserva(StatusReserva.cancelado);
-        reserva = reservaRepository.save(reserva);
+        Reserva reserva = reservaRepository.findById(id).orElseThrow(() -> new ReservaNaoEncontradaException("Mesa não encontrada!"));
+        Long userId = usuarioRepository.findByEmail(getUsuarioLogado()).getId();
 
-        atualizarStatusMesaComBaseNaReserva(reserva);
+        if (userId.equals(reserva.getUsuario().getId())) {
+            reserva.setStatusReserva(StatusReserva.cancelado);
+            reserva = reservaRepository.save(reserva);
+
+            atualizarStatusMesaComBaseNaReserva(reserva);
+        } else {
+            throw new CancelamentoInvalidoException("Selecione uma reserva válida para cancelar!");
+        }
+
         return new ReservaDto(reserva);
     }
 
@@ -93,4 +102,7 @@ public class ReservaService {
         reservaRepository.save(reserva);
     }
 
+    public String getUsuarioLogado() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 }

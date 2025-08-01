@@ -23,6 +23,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(CancelamentoInvalidoException.class)
+    public ResponseEntity<Object> handleCancelamentoInvalido(CancelamentoInvalidoException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("error", "Conflito");
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(MesaNaoEncontradaException.class)
     public ResponseEntity<Object> handleMesaNaoEncontrada(MesaNaoEncontradaException ex) {
         Map<String, Object> body = new HashMap<>();

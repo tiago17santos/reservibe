@@ -30,7 +30,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/mesas").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/mesas/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/mesas/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/reserva/cancelar/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/reserva/confirmar/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/dashboard/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
