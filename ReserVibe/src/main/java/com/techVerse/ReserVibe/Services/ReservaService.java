@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ReservaService {
@@ -67,6 +68,10 @@ public class ReservaService {
 
         if (mesa.getStatus() != StatusMesa.disponivel) {
             throw new MesaInvalidaException("Mesa não disponível para reserva.");
+        }
+
+        if (!Objects.equals(mesa.getCapacidade(), reservaDto.getMesa().getCapacidade())){
+            throw new MesaInvalidaException("Capacidade não permitida");
         }
 
         reserva.setMesa(mesa);
