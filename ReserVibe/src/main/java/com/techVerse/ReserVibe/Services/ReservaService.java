@@ -1,18 +1,24 @@
 package com.techVerse.ReserVibe.Services;
 
+import com.techVerse.ReserVibe.Dtos.MesaResponseDto;
 import com.techVerse.ReserVibe.Dtos.ReservaDto;
+import com.techVerse.ReserVibe.Dtos.UsuarioDto;
 import com.techVerse.ReserVibe.Execptions.*;
 import com.techVerse.ReserVibe.Models.*;
 import com.techVerse.ReserVibe.Repositories.MesaRepository;
 import com.techVerse.ReserVibe.Repositories.ReservaRepository;
 import com.techVerse.ReserVibe.Repositories.UsuarioRepository;
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ReservaService {
@@ -66,6 +72,12 @@ public class ReservaService {
         reserva.setMesa(mesa);
         atualizarStatusMesaComBaseNaReserva(reserva);
         return new ReservaDto(reservaRepository.save(reserva));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Reserva> listarReservas(){
+        Long userId = usuarioRepository.findByEmail(getUsuarioLogado()).getId();
+        return reservaRepository.filtrarReservas(userId);
     }
 
     @Transactional
